@@ -1,20 +1,63 @@
 #contact_modal {
-    display: none;
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent backdrop */
+  justify-content: center;
+  align-items: center;
 }
+
+#contact_modal[aria-hidden="false"] {
+  display: flex; /* show the modal when aria-hidden is false */
+}
+
 
 .photograph-header {
     background-color: #FAFAFA;
     height: 300px;
     margin: 0 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
+
+/* Likes */
+.total-likes {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.likes button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
 
 .contact_button {
     font-size: 20px;
     font-weight: bold;
     color: white;
     padding: 11px;
-    width: 170px;
-    height: 70px;
+    width: 150px;
+    height: 60px;
     border: none;
     background-color: #901C1C;
     border-radius: 5px;
@@ -24,7 +67,7 @@
 .modal {
     border-radius: 5px;
     background-color: #DB8876;
-    width: 50%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,9 +86,10 @@
 }
 
 .modal header h2 {
-    font-size: 64px;
+    font-size: 30px;
     font-weight: normal;
     text-align: center;
+    color: black;
 }
 
 form {
@@ -57,7 +101,7 @@ form {
 
 form label {
     color: #312E2E;
-    font-size: 36px;
+    font-size: 25px;
 }
 
 form div {
@@ -70,7 +114,128 @@ form div {
 
 form input {
     width: 100%;
-    height: 68px;
+    height: 32px;
     border: none;
+    font-size: 20px;
     border-radius: 5px;
 }
+
+textarea {
+    width: 100%;
+    height: 100px;
+}
+.lightbox {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.lightbox.active {
+  display: flex; /* Show when active */
+}
+
+/* MEDIA GALLERY section */
+.media-section img,
+.media-section video {
+  width: 250px;     
+  height: 320px;     
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* LIGHTBOX fullscreen view */
+.lightbox__content img,
+.lightbox__content video {
+  max-width: 90%;
+  max-height: 80vh;
+  display: block;
+  margin: 0 auto;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+
+.lightbox__close,
+.lightbox__prev,
+.lightbox__next {
+  position: absolute;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.lightbox__close {
+  top: 1rem;
+  right: 2rem;
+}
+
+.lightbox__prev {
+  top: 50%;
+  left: 2rem;
+  transform: translateY(-50%);
+}
+
+.lightbox__next {
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+}
+.sort-menu {
+  position: relative;
+  display: inline-block;
+  font-family: 'DM Sans', sans-serif;
+  margin: 20px;
+}
+
+.custom-select {
+  background-color: maroon;
+  border: 1px solid #ccc;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  position: relative;
+  width: 150px;
+  color: white;
+}
+
+.custom-select .select-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 10;
+}
+
+.custom-select.active .select-options {
+  display: block;
+}
+
+.select-options li {
+  padding: 10px;
+  cursor: pointer;
+  list-style: none;
+  background-color: maroon;
+  color: white;
+}
+
+.select-options li:hover {
+  background-color: maroon;
+}
+

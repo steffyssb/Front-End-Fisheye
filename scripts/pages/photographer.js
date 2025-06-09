@@ -1,112 +1,240 @@
 //Mettre le code JavaScript lié à la page photographer.html
-function photographerTemplate(data) {
-    const { name, portrait, city, country, tagline, price, id } = data;
-    const picture = `assets/photographers/${portrait}`;
 
-    function getUserCardDOM() {
-        const article = document.createElement("article");
+let currentMediaList = []; // to store media array
+let currentIndex = 0; // to track which media is currently open
 
-        const link = document.createElement("a");
-        link.setAttribute("href", `photographer.html?id=${id}`);
-        link.setAttribute("aria-label", `${name}`);
-        
-        const img = document.createElement("img");
-        img.setAttribute("src", picture);
-        img.setAttribute("alt", `${name}`);
+const params = new URLSearchParams(window.location.search);
+const photographerId = parseInt(params.get("id")); // get ?id=123
 
-        const h2 = document.createElement("h2");
-        h2.textContent = name;
+async function getPhotographerData() {
+  const res = await fetch('./data/photographers.json');
+  const data = await res.json();
 
-        const location = document.createElement("h3");
-        location.textContent = `${city}, ${country}`;
+  const photographer = data.photographers.find(p => p.id === photographerId);
+  const media = data.media.filter(m => m.photographerId === photographerId);
 
-        const tag = document.createElement("p");
-        tag.classList.add("tagline");
-        tag.textContent = tagline;
+  return { photographer, media };
+}
+function displayPhotographerInfo(photographer) {
+  const header = document.querySelector('.photograph-header');
 
-        const rate = document.createElement("p");
-        rate.classList.add("price");
-        rate.textContent = `${price}€/jour`;
+  const info = document.createElement('div');
+  const name = document.createElement('h1');
+  name.textContent = photographer.name;
 
-        link.appendChild(img);
-        link.appendChild(h2);
+  const location = document.createElement('p');
+  location.textContent = `${photographer.city}, ${photographer.country}`;
 
-        article.appendChild(link);
-        article.appendChild(location);
-        article.appendChild(tag);
-        article.appendChild(rate);
+  const tagline = document.createElement('p');
+  tagline.textContent = photographer.tagline;
 
-        return article;
+  info.appendChild(name);
+  info.appendChild(location);
+  info.appendChild(tagline);
+
+  const img = document.createElement('img');
+  img.setAttribute('src', `assets/photographers/${photographer.portrait}`);
+  img.setAttribute('alt', photographer.name);
+
+  header.insertBefore(info, header.querySelector('.contact_button'));
+  header.appendChild(img);
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const customSelect = document.querySelector(".custom-select");
+  const selected = customSelect.querySelector(".selected");
+  const options = customSelect.querySelectorAll(".select-options li");
+
+  customSelect.addEventListener("click", () => {
+    customSelect.classList.toggle("active");
+  });
+
+  options.forEach(option => {
+    option.addEventListener("click", () => {
+      selected.textContent = option.textContent;
+      customSelect.classList.remove("active");
+      const sortBy = option.getAttribute("data-sort");
+      sortMedia(sortBy);
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!customSelect.contains(e.target)) {
+      customSelect.classList.remove("active");
     }
+  });
+});
 
-    return { name, picture, getUserCardDOM };
-}
-async function getPhotographerData(id) {
-    const response = await fetch('../data/photographers.json');
-    const data = await response.json();
-    
-    const photographer = data.photographers.find((p) => p.id === id);
-    const media = data.media.filter((m) => m.photographerId === id);
-
-    return { photographer, media };
-}
-function getPhotographerIdFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    return parseInt(params.get('id'));
-}
-// Step 1: Fetch photographer and media data
-async function getPhotographerData(id) {
-    const response = await fetch('../data/photographers.json');
-    const data = await response.json();
-    
-    const photographer = data.photographers.find((p) => p.id === id);
-    const media = data.media.filter((m) => m.photographerId === id);
-
-    return { photographer, media };
+// Example sorting function placeholder
+function sortMedia(criteria) {
+  console.log("Sort by:", criteria);
+  currentMediaList.sort()
+  displayMedia(currentMediaList);
 }
 
-// Step 2: Extract ID from URL
-function getPhotographerIdFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    return parseInt(params.get('id'));
+function displayMedia(mediaList) {
+  currentMediaList = mediaList;
+  const container = document.querySelector('.media-section');
+  let totalLikes = 0;
+
+  mediaList.forEach(media => {
+    const mediaItem = document.createElement('article');
+
+    let mediaElement;
+    if (media.image) {
+      mediaElement = document.createElement('img');
+      mediaElement.setAttribute('src', `./assets/images/${photographerId}/${media.image}`);
+      mediaElement.setAttribute('alt', media.title);
+    } else if (media.video) {
+      mediaElement = document.createElement('video');
+      mediaElement.setAttribute('src', `./assets/images/${photographerId}/${media.video}`);
+      mediaElement.setAttribute('controls', true);
+    }
+    const title = document.createElement('h2');
+    title.textContent = media.title;
+
+    const likeContainer = document.createElement('div');
+    likeContainer.classList.add('likes');
+
+    const likeCount = document.createElement('span');
+    likeCount.textContent = media.likes;
+
+    const likeButton = document.createElement('button');
+    likeButton.setAttribute('aria-label', `Liker ${media.title}`);
+    likeButton.innerHTML = `<i class="fa fa-heart" aria-hidden="true"></i>`;
+
+    likeButton.addEventListener('click', () => {
+      media.likes++;
+      likeCount.textContent = media.likes;
+      totalLikes++;
+      updateTotalLikes(totalLikes);
+    });
+
+    likeContainer.appendChild(likeCount);
+    likeContainer.appendChild(likeButton);
+
+    mediaElement.style.cursor = "pointer";
+mediaElement.addEventListener("click", () => {
+   console.log("Clicked media:", media.title); 
+  openLightbox(mediaList.indexOf(media));
+});
+
+    mediaItem.appendChild(mediaElement);
+    mediaItem.appendChild(title);
+    mediaItem.appendChild(likeContainer);
+
+    container.appendChild(mediaItem);
+
+    totalLikes += media.likes;
+  });
+
+  // Display total likes
+  displayTotalLikes(totalLikes);
 }
 
+function displayTotalLikes(initialTotal) {
+
+  const likeNumber = document.querySelector('.total-likes span');
+  likeNumber.textContent = initialTotal;
+
+}
+
+function updateTotalLikes(newTotal) {
+  const likeTotalEl = document.querySelector('.total-likes span');
+  if (likeTotalEl) {
+    likeTotalEl.textContent = newTotal;
+  }
+}
+function displayModal() {
+  const modal = document.getElementById("contact_modal");
+  modal.style.display = "block";
+  modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden"; // Prevent background scroll
+}
+
+function closeModal() {
+  const modal = document.getElementById("contact_modal");
+  modal.style.display = "none";
+  modal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = ""; // Restore scrolling
+}
 async function init() {
-    const id = getPhotographerIdFromUrl();
-    const { photographer, media } = await getPhotographerData(id);
-
-    displayPhotographerHeader(photographer); 
-    console.log('Photographer:', photographer);
-    console.log('Media:', media);
+  const { photographer, media } = await getPhotographerData();
+  displayPhotographerInfo(photographer);
+  displayModalname (photographer.name);
+  displayMedia(media);
+  document.querySelector(".lightbox__close").addEventListener("click", () => {
+  const lightbox = document.querySelector(".lightbox");
+  lightbox.classList.remove("active");
+  lightbox.setAttribute("aria-hidden", "true");
+});
+function displayModalname (photographerName) {
+  const titleName = document.querySelector("#contact_modal h2");
+  titleName.textContent = 'Contactez-moi ' +  photographerName;
 }
 
+document.querySelector(".lightbox__prev").addEventListener("click", () => {
+  currentIndex = (currentIndex - 1 + currentMediaList.length) % currentMediaList.length;
+  showMediaInLightbox(currentMediaList[currentIndex]);
+});
 
-init(); // 👈 This triggers everything when the page loads
-function displayPhotographerHeader(photographer) {
-    const header = document.querySelector(".photograph-header");
-
-    const infoDiv = document.createElement("div");
-    infoDiv.classList.add("photographer-info");
-
-    const name = document.createElement("h2");
-    name.textContent = photographer.name;
-
-    const location = document.createElement("p");
-    location.classList.add("photographer-location");
-    location.textContent = `${photographer.city}, ${photographer.country}`;
-
-    const tagline = document.createElement("p");
-    tagline.classList.add("photographer-tagline");
-    tagline.textContent = photographer.tagline;
-
-    infoDiv.appendChild(name);
-    infoDiv.appendChild(location);
-    infoDiv.appendChild(tagline);
-
-    const img = document.createElement("img");
-    img.setAttribute("src", `assets/photographers/${photographer.portrait}`);
-    img.setAttribute("alt", photographer.name);
-
-    header.insertBefore(infoDiv, header.querySelector(".contact_button"));
-    header.appendChild(img);
+document.querySelector(".lightbox__next").addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % currentMediaList.length;
+  showMediaInLightbox(currentMediaList[currentIndex]);
+});
 }
+
+init();
+function openLightbox(index) {
+  console.log("Opening lightbox at index:", index);
+  currentIndex = index;
+    const lightbox = document.querySelector(".lightbox");
+  console.log("Lightbox element found?", lightbox !== null);
+  lightbox.classList.add("active");
+  lightbox.setAttribute("aria-hidden", "false");
+
+  showMediaInLightbox(currentMediaList[currentIndex]);
+}
+
+function showMediaInLightbox(media) {
+  const container = document.querySelector(".lightbox__content");
+  container.innerHTML = "";
+
+  let element;
+  if (media.image) {
+    element = document.createElement("img");
+    element.src = `./assets/images/${photographerId}/${media.image}`;
+    element.alt = media.title;
+  } else if (media.video) {
+    element = document.createElement("video");
+    element.src = `./assets/images/${photographerId}/${media.video}`;
+    element.controls = true;
+  }
+
+  const title = document.createElement("p");
+  title.textContent = media.title;
+
+  container.appendChild(element);
+  container.appendChild(title);
+}
+
+document.addEventListener("keydown", (e) => {
+  const lightbox = document.querySelector(".lightbox");
+  if (!lightbox.classList.contains("active")) return;
+
+  switch (e.key) {
+    case "ArrowRight":
+      currentIndex = (currentIndex + 1) % currentMediaList.length;
+      showMediaInLightbox(currentMediaList[currentIndex]);
+      break;
+    case "ArrowLeft":
+      currentIndex = (currentIndex - 1 + currentMediaList.length) % currentMediaList.length;
+      showMediaInLightbox(currentMediaList[currentIndex]);
+      break;
+    case "Escape":
+      lightbox.classList.remove("active");
+      lightbox.setAttribute("aria-hidden", "true");
+      break;
+  }
+});
+
+

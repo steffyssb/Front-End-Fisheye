@@ -1,53 +1,82 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="./css/photographer.css" rel="stylesheet" type="text/css" />
+    <link href="./css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
     <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <title>Fisheye - photographe </title>
+    <title>Fisheye - photographe</title>
   </head>
   <body>
     <header>
       <a href="./index.html" aria-label="Retour à l'accueil">
-      <img src="./assets/images/logo.png" class="logo" />
+        <img src="./assets/images/logo.png" class="logo" />
       </a>
     </header>
+
     <main id="main">
       <div class="photograph-header">
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
       </div>
-      <div class="media-section">
-      </div>
+       <div class="sort-menu">
+  <label for="sort-select">Trier par</label>
+  <div class="custom-select" tabindex="0">
+    <span class="selected">Popularité</span>
+    <ul class="select-options" aria-label="Trier par">
+      <li data-sort="popularity">Popularité</li>
+      <li data-sort="date">Date</li>
+      <li data-sort="title">Titre</li>
+    </ul>
+  </div>
+</div>
+      <div class="media-section"></div>
     </main>
+
+    <!-- Contact Modal -->
     <div id="contact_modal" aria-hidden="true" role="dialog" aria-modal="true">
-			<div class="modal">
-				<header>
+      <div class="modal">
+        <header>
           <h2>Contactez-moi</h2>
           <img src="assets/icons/close.svg" onclick="closeModal()" />
         </header>
-				<form id="contact_form">
-					<div>
+        <form id="contact_form">
+          <div>
             <label for="firstName">Prénom</label>
-            <input id="firstName" name="firstName" type="text" required/>
-        </div>
-        <div>
+            <input id="firstName" name="firstName" type="text" required />
+          </div>
+          <div>
             <label for="lastName">Nom</label>
-            <input id="lastName" name="lastName" type="text" required/>
-        </div>
-        <div>
+            <input id="lastName" name="lastName" type="text" required />
+          </div>
+          <div>
             <label for="email">Email</label>
-            <input id="email" name="email" type="email" required/>
-        </div>
-        <div>
+            <input id="email" name="email" type="email" required />
+          </div>
+          <div>
             <label for="message">Votre message</label>
             <textarea id="message" name="message" required></textarea>
-				</div>
+          </div>
           <button class="contact_button">Envoyer</button>
-				</form>
-			</div>
-		</div>
+        </form>
+      </div>
+    </div>
+
+    
+    <div class="total-likes" aria-label="Total des likes">
+      <span>0</span> <i class="fa fa-heart" aria-hidden="true"></i>
+    </div>
+   
+    <div class="lightbox" aria-hidden="true" tabindex="-1">
+      <button class="lightbox__close" aria-label="Close lightbox">&times;</button>
+      <button class="lightbox__prev" aria-label="Previous media">&#10094;</button>
+      <button class="lightbox__next" aria-label="Next media">&#10095;</button>
+      <div class="lightbox__content" role="dialog" aria-modal="true">
+        <!-- Media will be injected here -->
+      </div>
+    </div>
+
+    <script src="./scripts/templates/photographer.js"></script>
     <script src="./scripts/pages/photographer.js"></script>
-    <script src="./scripts/pages/index.js"></script>
   </body>
 </html>

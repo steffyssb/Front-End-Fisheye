@@ -2,6 +2,8 @@
 
 body {
     font-family: "DM Sans", sans-serif;
+    color: maroon;
+    font-size: 15px;
     margin: 0;
 }
 
@@ -44,7 +46,19 @@ h1 {
     font-size: 36px;
 }
 
-.photographer_section article img {
+.photographer_section article img,
+.photograph-header img {
     height: 200px;
     width: 200px;
+    border-radius: 100%;
+    object-fit: cover;
 }
+.media-section {
+  display: flex;
+  flex-wrap: wrap;         
+  flex-direction: row;     
+  gap: 20px;               
+  justify-content: center; 
+  padding: 20px;
+}
+
