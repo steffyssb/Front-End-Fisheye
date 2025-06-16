@@ -1,5 +1,6 @@
 //Mettre le code JavaScript lié à la page photographer.html
 
+let originalMediaList = [];
 let currentMediaList = []; // to store media array
 let currentIndex = 0; // to track which media is currently open
 
@@ -23,9 +24,11 @@ function displayPhotographerInfo(photographer) {
   name.textContent = photographer.name;
 
   const location = document.createElement('p');
+   location.className = 'photographer-location2';
   location.textContent = `${photographer.city}, ${photographer.country}`;
 
   const tagline = document.createElement('p');
+  tagline.className = 'photographer-tagline2';
   tagline.textContent = photographer.tagline;
 
   info.appendChild(name);
@@ -66,14 +69,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Example sorting function placeholder
 function sortMedia(criteria) {
-  console.log("Sort by:", criteria);
-  currentMediaList.sort()
-  displayMedia(currentMediaList);
+  let sortedMedia = [...originalMediaList]; // always start from original
+
+  if (criteria === "popularity") {
+    sortedMedia.sort((a, b) => b.likes - a.likes);
+  } else if (criteria === "date") {
+    sortedMedia.sort((a, b) => new Date(b.date) - new Date(a.date));
+  } else if (criteria === "title") {
+    sortedMedia.sort((a, b) => a.title.localeCompare(b.title));
+  }
+
+  currentMediaList = sortedMedia; // update current list
+  displayMedia(currentMediaList); // re-render display
 }
+
+
 
 function displayMedia(mediaList) {
   currentMediaList = mediaList;
   const container = document.querySelector('.media-section');
+  container.innerHTML = '';
   let totalLikes = 0;
 
   mediaList.forEach(media => {
@@ -161,7 +176,9 @@ async function init() {
   const { photographer, media } = await getPhotographerData();
   displayPhotographerInfo(photographer);
   displayModalname (photographer.name);
-  displayMedia(media);
+   originalMediaList = media; // store original
+  currentMediaList = [...originalMediaList]; // create copy
+  displayMedia(currentMediaList);
   document.querySelector(".lightbox__close").addEventListener("click", () => {
   const lightbox = document.querySelector(".lightbox");
   lightbox.classList.remove("active");

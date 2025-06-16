@@ -20,15 +20,18 @@ function getUserCardDOM() {
 
     link.appendChild(img);
     link.appendChild(h2);
-
-    const location = document.createElement('p');
+    
+ const location = document.createElement('p');
     location.textContent = `${city}, ${country}`;
+    location.classList.add("photographer-location");
 
     const taglineElement = document.createElement('p');
     taglineElement.textContent = tagline;
+    taglineElement.classList.add("photographer-tagline");
 
     const pricetag = document.createElement('p');
     pricetag.textContent = `${price}€/jour`;
+    pricetag.classList.add("photographer-price");
 
     article.appendChild(link);
     article.appendChild(location);

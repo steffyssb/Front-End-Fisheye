@@ -22,8 +22,22 @@
     margin: 0 100px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
+}
+.photograph-header h1 {
+    font-size: 60px;
+    color: #D3573C;
+    margin: 0;
+}
+.photographer-location2 {
+    font-size: 24px;
+    margin: 10px;
+    color: #901C1C;
+}
+.photographer-tagline2 {
+    font-size: 18px;
+    color: #525252;
 }
 
 /* Likes */
@@ -39,13 +53,15 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  margin-top: 0.5rem;
+  position: relative;
+  left: 295px;
+  bottom: 29px;
 }
 
 .likes button {
   background: none;
   border: none;
-  color: red;
+  color: #901C1C;
   cursor: pointer;
   font-size: 1.1rem;
 }
@@ -83,6 +99,7 @@
 
 .modal header img {
     cursor: pointer;
+    width: 20px;
 }
 
 .modal header h2 {
@@ -147,10 +164,14 @@ textarea {
 /* MEDIA GALLERY section */
 .media-section img,
 .media-section video {
-  width: 250px;     
+  width: 350px;     
   height: 320px;     
   border-radius: 8px;
   object-fit: cover;
+}
+.media-section article h2 {
+    font-size: 24px;
+    margin: 0;
 }
 
 /* LIGHTBOX fullscreen view */
@@ -195,13 +216,16 @@ textarea {
 }
 .sort-menu {
   position: relative;
-  display: inline-block;
+  display: flex;
   font-family: 'DM Sans', sans-serif;
   margin: 20px;
+  gap: 10px;
+  color: #000;
+  left: 80px;
 }
 
 .custom-select {
-  background-color: maroon;
+  background-color: #901C1C;
   border: 1px solid #ccc;
   padding: 10px 12px;
   cursor: pointer;
@@ -231,11 +255,11 @@ textarea {
   padding: 10px;
   cursor: pointer;
   list-style: none;
-  background-color: maroon;
+  background-color:#901C1C;
   color: white;
 }
 
 .select-options li:hover {
-  background-color: maroon;
+  background-color: #901C1C;
 }
 
