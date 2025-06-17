@@ -69,9 +69,9 @@ position: sticky;
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  position: relative;
-  left: 295px;
-  bottom: 29px;
+  position: absolute;
+  right: 1rem;
+  bottom: 2rem;
 }
 
 .likes button {
@@ -188,6 +188,10 @@ textarea {
 .media-section article h2 {
     font-size: 24px;
     margin: 0;
+}
+.media-section article {
+  position: relative;
+  padding-bottom: 2rem;
 }
 
 /* LIGHTBOX fullscreen view */

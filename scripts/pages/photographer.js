@@ -176,6 +176,7 @@ async function init() {
   const { photographer, media } = await getPhotographerData();
   displayPhotographerInfo(photographer);
   displayModalname (photographer.name);
+   document.getElementById("photographer_price").textContent = `${photographer.price}€/jour`;
    originalMediaList = media; // store original
   currentMediaList = [...originalMediaList]; // create copy
   displayMedia(currentMediaList);
