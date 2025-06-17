@@ -48,7 +48,23 @@
   gap: 0.5rem;
   margin-top: 1rem;
 }
-
+aside{
+position: sticky;
+  bottom: 0;
+  left: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 50px;
+  width: fit-content;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: clamp(1.6rem, 2vw, 2rem);
+  background-color: #DB8876;
+  color: #000;
+}
 .likes {
   display: flex;
   align-items: center;
@@ -196,6 +212,7 @@ textarea {
   font-size: 2.5rem;
   cursor: pointer;
   z-index: 10000;
+  color: #901C1C;
 }
 
 .lightbox__close {
@@ -245,6 +262,7 @@ textarea {
   border: 1px solid #ccc;
   border-top: none;
   z-index: 10;
+  padding: 0;
 }
 
 .custom-select.active .select-options {
